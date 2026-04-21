@@ -24,83 +24,66 @@
             padding: 40px;
         }
         
-        /* 旋转渐变边框效果 */
+        /* 旋转边框效果 */
         .image-wrapper {
             display: inline-block;
             position: relative;
             margin-bottom: 20px;
-            padding: 3px;
             border-radius: 18px;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0%,
-                #00d4ff 10%,
-                #ffffff 25%,
-                #00d4ff 40%,
-                transparent 50%,
-                transparent 60%,
-                #0099ff 70%,
-                #ffffff 85%,
-                #00d4ff 95%,
-                transparent 100%
-            );
-            animation: rotate-border 3s linear infinite;
+            padding: 3px;
+            overflow: hidden;
         }
         
-        @keyframes rotate-border {
-            0% {
-                background: conic-gradient(
-                    from 0deg,
-                    transparent 0%,
-                    #00d4ff 10%,
-                    #ffffff 25%,
-                    #00d4ff 40%,
-                    transparent 50%,
-                    transparent 60%,
-                    #0099ff 70%,
-                    #ffffff 85%,
-                    #00d4ff 95%,
-                    transparent 100%
-                );
-            }
-            100% {
-                background: conic-gradient(
-                    from 360deg,
-                    transparent 0%,
-                    #00d4ff 10%,
-                    #ffffff 25%,
-                    #00d4ff 40%,
-                    transparent 50%,
-                    transparent 60%,
-                    #0099ff 70%,
-                    #ffffff 85%,
-                    #00d4ff 95%,
-                    transparent 100%
-                );
-            }
-        }
-        
-        /* 内层遮罩，只显示边框 */
+        /* 旋转的渐变背景 */
         .image-wrapper::before {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 3px;
-            right: 3px;
-            bottom: 3px;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0%,
+                #00d4ff 5%,
+                #ffffff 15%,
+                #00d4ff 25%,
+                transparent 35%,
+                transparent 45%,
+                #0099ff 55%,
+                #ffffff 65%,
+                #00d4ff 75%,
+                transparent 85%,
+                transparent 100%
+            );
+            animation: rotate 3s linear infinite;
+            z-index: 1;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* 内层遮罩 */
+        .image-inner {
+            position: relative;
+            z-index: 2;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 15px;
-            z-index: 1;
+            padding: 3px;
         }
         
         .handshake-img {
             width: 150px;
             height: 150px;
-            border-radius: 15px;
+            border-radius: 12px;
             object-fit: cover;
             display: block;
-            position: relative;
-            z-index: 2;
         }
         
         h1 {
@@ -129,7 +112,9 @@
 <body>
     <div class="container">
         <div class="image-wrapper">
-            <img src="handshake.jpg" alt="握手" class="handshake-img">
+            <div class="image-inner">
+                <img src="handshake.jpg" alt="握手" class="handshake-img">
+            </div>
         </div>
         <h1>Hello World!</h1>
         <p>你好，世界！这是小黑马为你生成的网页 🎉</p>
