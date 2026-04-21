@@ -24,64 +24,100 @@
             padding: 40px;
         }
         
-        /* 旋转边框效果 */
-        .image-wrapper {
+        /* 图片卡片容器 - 深色背景 + 发光效果 */
+        .image-card {
             display: inline-block;
             position: relative;
             margin-bottom: 20px;
-            border-radius: 18px;
-            padding: 3px;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 4px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 128, 0.15),
+                0 0 40px rgba(0, 255, 128, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             overflow: hidden;
         }
         
-        /* 旋转的渐变背景 */
-        .image-wrapper::before {
+        /* 顶部流动的绿色光条 */
+        .image-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg,
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(
+                90deg,
                 transparent 0%,
-                #00d4ff 5%,
-                #ffffff 15%,
-                #00d4ff 25%,
-                transparent 35%,
-                transparent 45%,
-                #0099ff 55%,
-                #ffffff 65%,
-                #00d4ff 75%,
-                transparent 85%,
+                transparent 20%,
+                #00ff88 40%,
+                #00ffaa 50%,
+                #00ff88 60%,
+                transparent 80%,
                 transparent 100%
             );
-            animation: rotate 3s linear infinite;
-            z-index: 1;
+            animation: flow-light 2s linear infinite;
+            z-index: 10;
+            box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
         }
         
-        @keyframes rotate {
+        /* 四周边框微光 */
+        .image-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 255, 128, 0.4) 0%,
+                rgba(0, 255, 128, 0.1) 25%,
+                transparent 50%,
+                rgba(0, 255, 128, 0.1) 75%,
+                rgba(0, 255, 128, 0.4) 100%
+            );
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: border-shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes flow-light {
             0% {
-                transform: rotate(0deg);
+                left: -100%;
             }
             100% {
-                transform: rotate(360deg);
+                left: 100%;
             }
         }
         
-        /* 内层遮罩 */
+        @keyframes border-shimmer {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        /* 图片容器 */
         .image-inner {
             position: relative;
-            z-index: 2;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 3px;
+            z-index: 5;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #2a2a2a;
         }
         
         .handshake-img {
             width: 150px;
             height: 150px;
-            border-radius: 12px;
             object-fit: cover;
             display: block;
         }
@@ -111,7 +147,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="image-wrapper">
+        <div class="image-card">
             <div class="image-inner">
                 <img src="handshake.jpg" alt="握手" class="handshake-img">
             </div>
