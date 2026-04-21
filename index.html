@@ -24,7 +24,6 @@
             padding: 40px;
         }
         
-        /* 图片卡片 - 固定尺寸 */
         .image-card {
             position: relative;
             width: 156px;
@@ -38,7 +37,6 @@
                 0 0 60px rgba(0, 255, 128, 0.1);
         }
         
-        /* SVG 流动边框 - 精确匹配尺寸 */
         .border-svg {
             position: absolute;
             top: 0;
@@ -49,54 +47,19 @@
             pointer-events: none;
         }
         
-        .border-line {
+        /* 头部圆点样式 */
+        .dot-head {
+            fill: #00ff88;
+            filter: drop-shadow(0 0 8px #00ff88) drop-shadow(0 0 16px #00ff88);
+        }
+        
+        /* 拖尾样式 */
+        .trail {
             fill: none;
-            stroke-width: 3;
             stroke-linecap: round;
             stroke-linejoin: round;
-            filter: drop-shadow(0 0 6px #00ff88) drop-shadow(0 0 12px #00ff88);
         }
         
-        .flow-head {
-            stroke: #ffffff;
-            stroke-dasharray: 30 480;
-            animation: border-flow 2s linear infinite;
-        }
-        
-        .flow-mid {
-            stroke: #00ff88;
-            stroke-dasharray: 30 480;
-            animation: border-flow 2s linear infinite;
-            animation-delay: -0.08s;
-            opacity: 0.8;
-        }
-        
-        .flow-tail {
-            stroke: #00aa66;
-            stroke-dasharray: 35 475;
-            animation: border-flow 2s linear infinite;
-            animation-delay: -0.16s;
-            opacity: 0.5;
-        }
-        
-        .flow-fade {
-            stroke: #006633;
-            stroke-dasharray: 40 470;
-            animation: border-flow 2s linear infinite;
-            animation-delay: -0.24s;
-            opacity: 0.3;
-        }
-        
-        @keyframes border-flow {
-            0% {
-                stroke-dashoffset: 0;
-            }
-            100% {
-                stroke-dashoffset: -510;
-            }
-        }
-        
-        /* 图片容器 */
         .image-inner {
             position: absolute;
             top: 3px;
@@ -142,16 +105,39 @@
 <body>
     <div class="container">
         <div class="image-card">
-            <!-- SVG 流动边框 - 精确尺寸 -->
             <svg class="border-svg" viewBox="0 0 156 156">
                 <defs>
-                    <path id="rectPath" d="M 13 1.5 L 143 1.5 Q 154.5 1.5 154.5 13 L 154.5 143 Q 154.5 154.5 143 154.5 L 13 154.5 Q 1.5 154.5 1.5 143 L 1.5 13 Q 1.5 1.5 13 1.5 Z"/>
+                    <!-- 边框路径 -->
+                    <path id="borderPath" d="M 13 1.5 L 143 1.5 Q 154.5 1.5 154.5 13 L 154.5 143 Q 154.5 154.5 143 154.5 L 13 154.5 Q 1.5 154.5 1.5 143 L 1.5 13 Q 1.5 1.5 13 1.5 Z"/>
+                    
+                    <!-- 拖尾渐变 -->
+                    <linearGradient id="trailGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                        <stop offset="25%" style="stop-color:#00dd77;stop-opacity:0.8" />
+                        <stop offset="55%" style="stop-color:#00aa55;stop-opacity:0.4" />
+                        <stop offset="85%" style="stop-color:#006633;stop-opacity:0.1" />
+                        <stop offset="100%" style="stop-color:#004422;stop-opacity:0" />
+                    </linearGradient>
                 </defs>
                 
-                <use href="#rectPath" class="border-line flow-fade"/>
-                <use href="#rectPath" class="border-line flow-tail"/>
-                <use href="#rectPath" class="border-line flow-mid"/>
-                <use href="#rectPath" class="border-line flow-head"/>
+                <!-- 拖尾路径：使用渐变，长度60 -->
+                <use href="#borderPath" class="trail" 
+                     stroke="url(#trailGradient)" 
+                     stroke-width="6"
+                     stroke-dasharray="60 450"
+                     stroke-dashoffset="0">
+                    <animate attributeName="stroke-dashoffset" 
+                             values="0;-510" 
+                             dur="3s" 
+                             repeatCount="indefinite"/>
+                </use>
+                
+                <!-- 头部圆点：直径约10px，与线条粗细相当 -->
+                <circle r="5" class="dot-head">
+                    <animateMotion dur="3s" repeatCount="indefinite">
+                        <mpath href="#borderPath"/>
+                    </animateMotion>
+                </circle>
             </svg>
             
             <div class="image-inner">
