@@ -23,6 +23,33 @@
             color: white;
             padding: 40px;
         }
+        /* 闪烁边框动画 */
+        .image-wrapper {
+            display: inline-block;
+            padding: 8px;
+            border-radius: 20px;
+            animation: flash-border 1.5s infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes flash-border {
+            0%, 100% {
+                box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.8),
+                            0 0 20px 6px rgba(255, 215, 0, 0.6),
+                            0 0 30px 9px rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 20px 6px rgba(255, 255, 255, 1),
+                            0 0 40px 12px rgba(255, 215, 0, 0.9),
+                            0 0 60px 18px rgba(255, 255, 255, 0.6);
+            }
+        }
+        .handshake-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            object-fit: cover;
+            display: block;
+        }
         h1 {
             font-size: 4rem;
             margin-bottom: 20px;
@@ -34,12 +61,6 @@
             opacity: 0.9;
             animation: fadeInUp 1s ease-out 0.3s both;
         }
-        .emoji {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-            display: inline-block;
-        }
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -50,19 +71,13 @@
                 transform: translateY(0);
             }
         }
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="emoji">👋</div>
+        <div class="image-wrapper">
+            <img src="handshake.png" alt="握手" class="handshake-img">
+        </div>
         <h1>Hello World!</h1>
         <p>你好，世界！这是小黑马为你生成的网页 🎉</p>
     </div>
