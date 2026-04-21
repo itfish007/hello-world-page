@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -26,55 +26,35 @@
         
         .image-card {
             position: relative;
-            width: 156px;
-            height: 156px;
+            width: 160px;
+            height: 160px;
             margin: 0 auto 20px;
-            background: #1a1a1a;
-            border-radius: 16px;
-            padding: 3px;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 128, 0.2),
-                0 0 60px rgba(0, 255, 128, 0.1);
         }
         
+        /* SVG 边框 */
         .border-svg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 156px;
-            height: 156px;
+            top: -4px;
+            left: -4px;
+            width: 168px;
+            height: 168px;
             z-index: 10;
             pointer-events: none;
         }
         
-        /* 头部圆点样式 */
-        .dot-head {
-            fill: #00ff88;
-            filter: drop-shadow(0 0 8px #00ff88) drop-shadow(0 0 16px #00ff88);
-        }
-        
-        /* 拖尾样式 */
-        .trail {
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-        
         .image-inner {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 150px;
-            height: 150px;
-            z-index: 5;
-            border-radius: 13px;
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border-radius: 16px;
             overflow: hidden;
-            background: #2a2a2a;
+            background: #1a1a1a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         
         .handshake-img {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             object-fit: cover;
             display: block;
         }
@@ -83,61 +63,61 @@
             font-size: 4rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            animation: fadeInUp 1s ease-out;
         }
         p {
             font-size: 1.5rem;
             opacity: 0.9;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="image-card">
-            <svg class="border-svg" viewBox="0 0 156 156">
+            <!-- 彗星流动边框 -->
+            <svg class="border-svg" viewBox="0 0 168 168">
                 <defs>
                     <!-- 边框路径 -->
-                    <path id="borderPath" d="M 13 1.5 L 143 1.5 Q 154.5 1.5 154.5 13 L 154.5 143 Q 154.5 154.5 143 154.5 L 13 154.5 Q 1.5 154.5 1.5 143 L 1.5 13 Q 1.5 1.5 13 1.5 Z"/>
+                    <path id="borderPath" d="M 16 4 L 152 4 Q 164 4 164 16 L 164 152 Q 164 164 152 164 L 16 164 Q 4 164 4 152 L 4 16 Q 4 4 16 4 Z"/>
                     
-                    <!-- 拖尾渐变 -->
-                    <linearGradient id="trailGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
-                        <stop offset="25%" style="stop-color:#00dd77;stop-opacity:0.8" />
-                        <stop offset="55%" style="stop-color:#00aa55;stop-opacity:0.4" />
-                        <stop offset="85%" style="stop-color:#006633;stop-opacity:0.1" />
-                        <stop offset="100%" style="stop-color:#004422;stop-opacity:0" />
+                    <!-- 拖尾渐变 - 亮绿到透明 -->
+                    <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#00ff88"/>
+                        <stop offset="5%" style="stop-color:#00ff88"/>
+                        <stop offset="25%" style="stop-color:#00dd66"/>
+                        <stop offset="50%" style="stop-color:#00aa44"/>
+                        <stop offset="75%" style="stop-color:#006622"/>
+                        <stop offset="100%" style="stop-color:#00ff88;stop-opacity:0"/>
                     </linearGradient>
+                    
+                    <!-- 发光滤镜 -->
+                    <filter id="strongGlow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="4" result="blur1"/>
+                        <feGaussianBlur stdDeviation="8" result="blur2"/>
+                        <feMerge>
+                            <feMergeNode in="blur2"/>
+                            <feMergeNode in="blur1"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
                 </defs>
                 
-                <!-- 拖尾路径：使用渐变，长度60 -->
-                <use href="#borderPath" class="trail" 
-                     stroke="url(#trailGradient)" 
-                     stroke-width="6"
-                     stroke-dasharray="60 450"
-                     stroke-dashoffset="0">
-                    <animate attributeName="stroke-dashoffset" 
-                             values="0;-510" 
-                             dur="3s" 
-                             repeatCount="indefinite"/>
+                <!-- 组件 1: 拖尾 -->
+                <use href="#borderPath" fill="none" stroke="url(#tailGrad)" stroke-width="8" 
+                     stroke-dasharray="100 450" stroke-linecap="round">
+                    <animate attributeName="stroke-dashoffset" values="0;-550" dur="2.5s" repeatCount="indefinite"/>
                 </use>
                 
-                <!-- 头部圆点：直径约10px，与线条粗细相当 -->
-                <circle r="5" class="dot-head">
-                    <animateMotion dur="3s" repeatCount="indefinite">
-                        <mpath href="#borderPath"/>
-                    </animateMotion>
-                </circle>
+                <!-- 组件 2: 亮点头部 -->
+                <use href="#borderPath" fill="none" stroke="#ffffff" stroke-width="10" 
+                     stroke-dasharray="0 550" stroke-linecap="round">
+                    <animate attributeName="stroke-dashoffset" values="-20;-570" dur="2.5s" repeatCount="indefinite"/>
+                </use>
+                
+                <!-- 组件 3: 最亮的核心点 -->
+                <use href="#borderPath" fill="none" stroke="#00ff88" stroke-width="6" 
+                     stroke-dasharray="0 550" stroke-linecap="round" filter="url(#strongGlow)">
+                    <animate attributeName="stroke-dashoffset" values="-25;-575" dur="2.5s" repeatCount="indefinite"/>
+                </use>
             </svg>
             
             <div class="image-inner">
