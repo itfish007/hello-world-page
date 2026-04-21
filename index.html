@@ -23,33 +23,89 @@
             color: white;
             padding: 40px;
         }
-        /* 闪烁边框动画 */
+        
+        /* 图片容器 */
         .image-wrapper {
             display: inline-block;
-            padding: 8px;
-            border-radius: 20px;
-            animation: flash-border 1.5s infinite;
+            position: relative;
             margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: visible;
         }
-        @keyframes flash-border {
-            0%, 100% {
-                box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.8),
-                            0 0 20px 6px rgba(255, 215, 0, 0.6),
-                            0 0 30px 9px rgba(255, 255, 255, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 20px 6px rgba(255, 255, 255, 1),
-                            0 0 40px 12px rgba(255, 215, 0, 0.9),
-                            0 0 60px 18px rgba(255, 255, 255, 0.6);
-            }
-        }
+        
         .handshake-img {
             width: 150px;
             height: 150px;
             border-radius: 15px;
             object-fit: cover;
             display: block;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
+        
+        /* SVG 激光边框 */
+        .laser-border {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .laser-path {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px currentColor);
+        }
+        
+        /* 激光头部 - 最亮 */
+        .laser-head {
+            stroke: #ffffff;
+            stroke-dasharray: 20 600;
+            animation: laserFlow 2s linear infinite;
+        }
+        
+        /* 激光中部 - 中等亮度 */
+        .laser-mid {
+            stroke: #00d4ff;
+            stroke-dasharray: 20 600;
+            animation: laserFlow 2s linear infinite;
+            animation-delay: -0.3s;
+            opacity: 0.7;
+        }
+        
+        /* 激光尾部 - 淡色 */
+        .laser-tail {
+            stroke: #0099cc;
+            stroke-dasharray: 30 590;
+            animation: laserFlow 2s linear infinite;
+            animation-delay: -0.6s;
+            opacity: 0.4;
+        }
+        
+        /* 更淡的尾部拖影 */
+        .laser-fade {
+            stroke: #006699;
+            stroke-dasharray: 40 580;
+            animation: laserFlow 2s linear infinite;
+            animation-delay: -0.9s;
+            opacity: 0.2;
+        }
+        
+        @keyframes laserFlow {
+            0% {
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dashoffset: -620;
+            }
+        }
+        
         h1 {
             font-size: 4rem;
             margin-bottom: 20px;
@@ -76,6 +132,20 @@
 <body>
     <div class="container">
         <div class="image-wrapper">
+            <!-- 激光边框 SVG -->
+            <svg class="laser-border" viewBox="0 0 158 158" preserveAspectRatio="none">
+                <!-- 边框路径 -->
+                <defs>
+                    <path id="borderPath" d="M 8 4 L 150 4 Q 154 4 154 8 L 154 150 Q 154 154 150 154 L 8 154 Q 4 154 4 150 L 4 8 Q 4 4 8 4 Z"/>
+                </defs>
+                
+                <!-- 四层激光效果，从尾部到头部 -->
+                <use href="#borderPath" class="laser-path laser-fade"/>
+                <use href="#borderPath" class="laser-path laser-tail"/>
+                <use href="#borderPath" class="laser-path laser-mid"/>
+                <use href="#borderPath" class="laser-path laser-head"/>
+            </svg>
+            
             <img src="handshake.jpg" alt="握手" class="handshake-img">
         </div>
         <h1>Hello World!</h1>
